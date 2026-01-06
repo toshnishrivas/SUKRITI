@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SUKRITI | Luxury Ethnic Wear</title>
+
+  <!-- Luxury Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Poppins',sans-serif;background:#fff;color:#111}
+
+    header{display:flex;justify-content:space-between;align-items:center;padding:22px 60px;border-bottom:1px solid #eee}
+    .logo{display:flex;align-items:center;font-family:'Playfair Display',serif;font-size:28px;letter-spacing:2px;color:#000}
+    .logo span{font-size:36px;margin-right:8px}
+
+    nav a{text-decoration:none;color:#111;margin-left:30px;font-size:14px}
+
+    .hero{height:80vh;display:flex;align-items:center;justify-content:center;text-align:center}
+    .hero h1{font-family:'Playfair Display',serif;font-size:52px}
+    .hero p{margin-top:12px;color:#555}
+
+    .section{padding:90px 60px}
+    .section h2{font-family:'Playfair Display',serif;text-align:center;font-size:36px;margin-bottom:50px}
+
+    .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px}
+    .product{border:1px solid #eee;padding:20px}
+    .product img{width:100%;height:360px;object-fit:cover}
+    .product h3{font-family:'Playfair Display',serif;margin-top:15px}
+    .product p{font-size:14px;color:#666}
+    .product button{margin-top:15px;width:100%;padding:12px;background:#000;color:#fff;border:none;cursor:pointer}
+
+    .order-box{max-width:720px;margin:auto}
+    input,textarea,select{width:100%;padding:12px;margin:6px 0;border:1px solid #ccc}
+    .pay-btn{background:#000;color:#fff;padding:15px;border:none;width:100%;margin-top:15px;font-size:16px}
+
+    .insta{background:#111;color:#fff;text-align:center;padding:70px 20px}
+
+    footer{text-align:center;padding:40px;border-top:1px solid #eee;font-size:14px}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><span>S</span>SUKRITI</div>
+  <nav>
+    <a href="#collection">Collection</a>
+    <a href="#custom">Custom Stitch</a>
+    <a href="#order">Order</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div>
+    <h1>Luxury Custom Ethnic Wear</h1>
+    <p>Handcrafted Kurtis & Anarkalis • Made to Measure</p>
+  </div>
+</section>
+
+<section class="section" id="collection">
+  <h2>Signature Collection</h2>
+  <div class="products">
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90" />
+      <h3>Noor Anarkali</h3>
+      <p>Royal festive elegance</p>
+      <p>₹4,999</p>
+      <button onclick="addToCart('Noor Anarkali',4999)">Add to Order</button>
+    </div>
+
+    <div class="product">
+      <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990" />
+      <h3>Aabha Silk Kurti</h3>
+      <p>Minimal everyday luxury</p>
+      <p>₹2,999</p>
+      <button onclick="addToCart('Aabha Silk Kurti',2999)">Add to Order</button>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="custom">
+  <h2>Custom Couture Experience</h2>
+  <div class="order-box">
+    <input placeholder="Bust (in inches)" />
+    <input placeholder="Waist (in inches)" />
+    <input placeholder="Length (in inches)" />
+    <input placeholder="Sleeve Length" />
+    <textarea placeholder="Design / Fabric / Notes"></textarea>
+  </div>
+</section>
+
+<section class="section" id="order">
+  <h2>Place Your Order</h2>
+  <div class="order-box">
+    <div id="cartItems"></div>
+    <h3 id="total"></h3>
+
+    <input id="name" placeholder="Full Name" />
+    <input id="phone" placeholder="Phone Number" />
+    <textarea id="address" placeholder="Delivery Address"></textarea>
+
+    <select id="size">
+      <option value="">Select Size</option>
+      <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option>
+      <option>Custom Stitch</option>
+    </select>
+
+    <button class="pay-btn" onclick="placeOrder()">Confirm Order & Pay via UPI</button>
+  </div>
+</section>
+
+<section class="insta">
+  <h2>Connect with SUKRITI</h2>
+  <p>Follow us on Instagram for latest collections & craftsmanship</p>
+</section>
+
+<footer>
+  <p>© 2026 SUKRITI • Luxury Ethnic Wear • Handcrafted in India</p>
+</footer>
+
+<script>
+  let cart=[];
+
+  function addToCart(name,price){cart.push({name,price});renderCart();}
+
+  function renderCart(){
+    let t=0,html='';
+    cart.forEach(i=>{t+=i.price;html+=`<p>${i.name} - ₹${i.price}</p>`});
+    document.getElementById('cartItems').innerHTML=html;
+    document.getElementById('total').innerText='Total: ₹'+t;
+  }
+
+  function placeOrder(){
+    const total=cart.reduce((s,i)=>s+i.price,0);
+    const name=nameEl.value=document.getElementById('name').value;
+    const phone=document.getElementById('phone').value;
+    const address=document.getElementById('address').value;
+    const size=document.getElementById('size').value;
+
+    if(!name||!phone||!address||!size){alert('Please fill all details');return;}
+
+    const orderId='SKT'+Date.now();
+    const items=cart.map(i=>i.name).join(', ');
+
+    const admin='+919243056028'; // YOUR WHATSAPP NUMBER
+    const upi='yourupi@upi';    // YOUR UPI ID
+
+    const msg=`✨ SUKRITI Luxury Order ✨%0AOrder ID: ${orderId}%0AName: ${name}%0APhone: ${phone}%0AAddress: ${address}%0ASize: ${size}%0AItems: ${items}%0ATotal: ₹${total}`;
+    window.open(`https://wa.me/${admin}?text=${msg}`,'_blank');
+
+    window.location.href=`upi://pay?pa=${upi}&pn=SUKRITI&am=${total}&cu=INR&tn=${orderId}`;
+
+    setTimeout(()=>{
+      const thanks=`🙏 Thank you for choosing SUKRITI%0AOrder ID: ${orderId}%0AOur designers will contact you shortly.`;
+      window.open(`https://wa.me/${phone}?text=${thanks}`,'_blank');
+    },3000);
+  }
+</script>
+
+</body>
+</html>
